@@ -18,7 +18,7 @@ export const webseiten: I_Webseite[] = [
     tel_WB: '+49 171 2345678',
     fertig: false,
     type: 'PORTFOLIO',
-    img_Folder: 'https://www.google.de',
+    img_Folder: 'www.google.de',
     configuration: {
       standart: false,
       startseite: false,
@@ -44,7 +44,7 @@ export const webseiten: I_Webseite[] = [
     tel_WB: '+49 30 9876543',
     fertig: true,
     type: 'PORTFOLIO',
-    img_Folder: 'https://www.youtube.de',
+    img_Folder: 'www.youtube.de',
     configuration: {
       standart: true,
       startseite: true,
@@ -70,7 +70,7 @@ export const webseiten: I_Webseite[] = [
     tel_WB: '+49 89 4567890',
     fertig: true,
     type: 'E-COMMERCE',
-    img_Folder: 'https://github.com',
+    img_Folder: 'www.github.com',
     configuration: {
       standart: false,
       startseite: false,

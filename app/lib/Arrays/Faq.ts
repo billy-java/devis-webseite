@@ -1,10 +1,6 @@
-interface Faq {
-    question: string;
-    reponse: string;
-    datum: Date;
-  }
-  
-  export const Faq: Faq[] = [
+import { I_Faq } from "../Interfaces/I_Faq";
+
+  export const Faq: I_Faq[] = [
     {
       question: "Welche Öffnungszeiten haben Sie?",
       reponse: "Unsere Öffnungszeiten sind von Montag bis Freitag, 9:00 bis 18:00 Uhr. Am Wochenende und an Feiertagen sind wir geschlossen. Für dringende Anfragen außerhalb der Öffnungszeiten können Sie uns per E-Mail kontaktieren, und wir werden uns so schnell wie möglich bei Ihnen melden.",

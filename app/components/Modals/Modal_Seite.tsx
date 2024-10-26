@@ -1,6 +1,6 @@
 'use client';
 
-import { I_Seite } from '@/app/lib/Interfaces/I_Seite';
+import { I_Seite, initialiseSeite } from '@/app/lib/Interfaces/I_Seite';
 import { labelCSS } from '@/app/lib/Methodes/methodes';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -11,80 +11,64 @@ import {
 
 interface ModalProps {
   isOpen: boolean;
-  boolUpdate: boolean;
-  alteSeite: null | I_Seite;
-  seiteID: string;
   onClose: () => void;
+  alteSeite?: I_Seite;
 }
 
-const Modal_Seite: React.FC<ModalProps> = ({
-  isOpen,
-  boolUpdate,
-  alteSeite,
-  seiteID,
-  onClose,
-}) => {
+const Modal_Seite: React.FC<ModalProps> = ({ isOpen, onClose, alteSeite }) => {
   const dispatch = useDispatch();
-
-  const [eineSeite, setSeite] = useState<I_Seite | null>(null);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setSeite({
-        id: '',
-        wb_id: seiteID,
-        title: '',
-        absatz: '',
-        kathegorie: 'STANDART',
-      });
-    }
-  }, [isOpen, seiteID]);
+  const [eineSeite, setSeite] = useState<I_Seite>(initialiseSeite());
 
   useEffect(() => {
-    if (boolUpdate && alteSeite) {
-      setSeite(alteSeite);
+    if (alteSeite) {
+      setSeite(alteSeite); // Remplir le formulaire en mode édition
     } else {
-      setSeite({
-        id: '',
-        wb_id: seiteID,
-        title: '',
-        absatz: '',
-        kathegorie: 'STANDART',
-      });
+      // Initialiser un formulaire vide en mode création
+      setSeite(initialiseSeite());
     }
-  }, [boolUpdate, alteSeite, seiteID]);
-
-  /* if (!isOpen) return null; */
-  if (!isOpen) return null;
+  }, [alteSeite]);
 
   const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+    index?: number
   ) => {
     const { name, value } = e.target;
 
-    setSeite((prevData) => ({ ...prevData!, [name]: value }));
+    if (name === 'titel' || name === 'absatz') {
+      // Mettre à jour uniquement la section spécifique du contenu
+      setSeite((prevData) => ({
+        ...prevData,
+        content: prevData.content.map((item, idx) =>
+          idx === index ? { ...item, [name]: value } : item
+        ),
+      }));
+    } else {
+      setSeite((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const die_Seite_Erstellen = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (boolUpdate) {
-      dispatch(updateSeite__Hilfe(eineSeite!));
+    if (alteSeite) {
+      dispatch(updateSeite__Hilfe(eineSeite));
     } else {
-      dispatch(addSeite__Hilfe(eineSeite!));
+      dispatch(addSeite__Hilfe(eineSeite));
     }
-
-    
 
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="text-left fixed inset-0 bg-opacity-5 flex items-center justify-center z-50 ">
-      <div className="bg-gray-700 p-8 mx-auto relative w-full max-w-3xl  max-h-[90vh] overflow-auto border-4   border-indigo-600 rounded-md ">
+    <div className="text-left fixed inset-0 bg-opacity-5 flex items-center justify-center z-50">
+      <div className="bg-gray-700 p-8 mx-auto relative w-full max-w-3xl max-h-[90vh] overflow-auto border-4 border-indigo-600 rounded-md">
         <button
           className="absolute top-2 right-2 text-gray-300"
           onClick={onClose}>
@@ -92,8 +76,7 @@ const Modal_Seite: React.FC<ModalProps> = ({
             className="w-9 h-9"
             fill="rgb(8 145 178)"
             stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+            viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -103,79 +86,70 @@ const Modal_Seite: React.FC<ModalProps> = ({
           </svg>
         </button>
         <h2 className="text-gray-100 text-center text-3xl mb-4">
-          {boolUpdate ? 'Diese Seite ändern' : 'Neue Seite erstellen'}!
+          {alteSeite ? 'Diese Seite ändern' : 'Neue Seite erstellen'}!
         </h2>
         <form onSubmit={die_Seite_Erstellen} className="space-y-6">
-          <div className="flex flex-col mb-4">
-            <label htmlFor="title" className={labelCSS}>
-              Ein Abschnitt einsetzen
-            </label>
-            <input
-              required
-              type="text"
-              id="title"
-              name="title"
-              value={eineSeite!.title}
-              onChange={handleChange}
-              placeholder="Ein Abschnitt für die Seite einsetzen"
-              className="w-full rounded-md border border-[#e0e0e0] bg-gray-600 py-3 px-6 text-base font-medium placeholder-gray-200 outline-none focus:border-[#6A64F1] focus:shadow-md"
-            />
-          </div>
-          <div className="flex flex-col mb-4">
-            <label htmlFor="absatz" className={labelCSS}>
-              Ein Absatz einsetzen
-            </label>
-            <textarea
-              required
-              id="absatz"
-              name="absatz"
-              value={eineSeite!.absatz}
-              onChange={handleChange}
-              placeholder="Untertitel der Webseite"
-              rows={5} // Ajustez le nombre de lignes visibles par défaut
-              className="w-full rounded-md border border-[#e0e0e0] bg-gray-600 py-3 px-6 text-base font-medium placeholder-gray-200 outline-none focus:border-[#6A64F1] focus:shadow-md"
-            />
-          </div>
+          {eineSeite.content.map((content, index) => (
+            <div key={index} className="mb-12">
+              <div className="flex flex-col mb-4">
+                <label htmlFor="titel" className={labelCSS}>
+                  Abschnitt {index + 1} einsetzen
+                </label>
+                <input
+                  required
+                  type="text"
+                  id="titel"
+                  name="titel"
+                  value={content.titel}
+                  onChange={(e) => handleChange(e, index)}
+                  placeholder="Ein Abschnitt für die Seite einsetzen"
+                  className="w-full rounded-md border bg-gray-600 py-3 px-6 text-base placeholder-gray-200"
+                />
+              </div>
+              <div className="flex flex-col mb-4">
+                <label htmlFor="absatz" className={labelCSS}>
+                  Absatz {index + 1} einsetzen
+                </label>
+                <textarea
+                  required
+                  id="absatz"
+                  name="absatz"
+                  value={content.absatz}
+                  onChange={(e) => handleChange(e, index)}
+                  placeholder="Untertitel der Webseite"
+                  rows={5}
+                  className="w-full rounded-md border bg-gray-600 py-3 px-6 text-base placeholder-gray-200"
+                />
+              </div>
+            </div>
+          ))}
 
-          <div className="flex flex-col mb-4">
-            <label htmlFor="kathegorie" className={labelCSS}>
-              Seitetyp
-            </label>
-            <select
-              required
-              id="kathegorie"
-              name="kathegorie"
-              value={eineSeite!.kathegorie}
-              onChange={handleChange}
-              className="w-full rounded-md border border-[#e0e0e0] bg-gray-600 py-3 px-6 text-base font-medium placeholder-gray-200 outline-none focus:border-[#6A64F1] focus:shadow-md">
-              <option className="text-xl" disabled value="">
-                Einen Seitetyp auswählen...
-              </option>
-              <option className="text-xl" value={'STARTSEITE'}>
-                Startseite
-              </option>
-              <option className="text-xl" value={'STANDART'}>
-                Standartseite
-              </option>
-              <option className="text-xl" value={'KONTAKT'}>
-                Kontaktseite
-              </option>
-              <option className="text-xl" value={'UEBER UNS'}>
-                Über uns
-              </option>
-              <option className="text-xl" value={'IMPRESSUM'}>
-                Impressumseite
-              </option>
-              <option className="text-xl" value={'DATENSCHUTZ'}>
-                Datenschutz
-              </option>
-            </select>
-          </div>
+          {!alteSeite && (
+            <div className="flex flex-col mb-4">
+              <label htmlFor="kathegorie" className={labelCSS}>
+                Seitetyp
+              </label>
+              <select
+                required
+                id="kathegorie"
+                name="kathegorie"
+                value={eineSeite.kathegorie}
+                onChange={handleChange}
+                className="w-full rounded-md border bg-gray-600 py-3 px-6 text-base placeholder-gray-200">
+                <option value="STARTSEITE">Startseite</option>
+                <option value="STANDART">Standartseite</option>
+                <option value="KONTAKT">Kontaktseite</option>
+                <option value="UEBER UNS">Über uns</option>
+                <option value="IMPRESSUM">Impressumseite</option>
+                <option value="DATENSCHUTZ">Datenschutz</option>
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-800 py-3 px-8 rounded-md text-gray-100 ">
-            {boolUpdate ? 'Die neue Version speichern' : 'Die Seite erstellen'}
+            className="w-full bg-indigo-600 hover:bg-indigo-800 py-3 px-8 rounded-md text-gray-100">
+            {alteSeite ? 'Die neue Version speichern' : 'Die Seite erstellen'}
           </button>
         </form>
       </div>

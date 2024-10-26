@@ -27,23 +27,23 @@ const Kontakt = () => {
           <div className="mx-auto">
             <div className="max-w-full mx-auto rounded-lg overflow-hidden">
               <div className="px-6 py-4">
+                <h3 className="text-lg font-medium text-gray-300">Anschrift</h3>
+                <p className="mt-1 text-gray-400">35395 Gießen, Deutschland</p>
+              </div>
+              <div className="border-t border-gray-200 px-6 py-4">
                 <h3 className="text-lg font-medium text-gray-300">
-                  Our Address
+                  Öffnungszeiten:
                 </h3>
                 <p className="mt-1 text-gray-400">
-                  123 Main St, San Francisco, CA 94105
+                  Montag - Fritag: 10Uhr - 17Uhr
                 </p>
               </div>
               <div className="border-t border-gray-200 px-6 py-4">
-                <h3 className="text-lg font-medium text-gray-300">Hours</h3>
-                <p className="mt-1 text-gray-400">Monday - Friday: 9am - 5pm</p>
-                <p className="mt-1 text-gray-400">Saturday: 10am - 4pm</p>
-                <p className="mt-1 text-gray-400">Sunday: Closed</p>
-              </div>
-              <div className="border-t border-gray-200 px-6 py-4">
-                <h3 className="text-lg font-medium text-gray-300">Contact</h3>
-                <p className="mt-1 text-gray-400">Email: info@example.com</p>
-                <p className="mt-1 text-gray-400">Phone: +1 23494 34993</p>
+                <h3 className="text-lg font-medium text-gray-300">Contakt</h3>
+                <p className="mt-1 text-gray-400">
+                  Email: contactcm02@gmail.com
+                </p>
+                <p className="mt-1 text-gray-400">Mobile: +49 176 34364986</p>
               </div>
             </div>
           </div>
