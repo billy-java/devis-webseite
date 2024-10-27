@@ -11,7 +11,6 @@ import { updateBenutzer__Hilfe } from '@/app/services/Reduces/benutzer_Slice';
 const Einloggen = () => {
   const router = useRouter();
   const users = useSelector((state: RootState) => state.users);
-  const messageListe = useSelector((state: RootState) => state.messages);
   const dispatch = useDispatch();
   
   const [passwort, setPasswort] = useState<string>('');
@@ -30,7 +29,7 @@ const Einloggen = () => {
 
           dispatch(updateBenutzer__Hilfe(newUser));
         
-          const currentU = { id: user.id, info: "einloggen", currentMessages: messageListe.filter(el => el.senderID === user.id || el.empfaengerID === user.id) }
+          const currentU = { id: user.id, info: "einloggen" }
           dispatch(login(currentU));
           router.push('/dashboard');
         } else {

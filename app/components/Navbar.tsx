@@ -24,33 +24,26 @@ const Navbar = () => {
   const [anzahlWebseiten, setAnzahlWebseiten] = useState(0);
   const [anzahlNeueMessages, setAnzahlNeueMessages] = useState(0);
   const [kunde, setKunde] = useState<boolean>(false);
-  const [connected, setConnected] = useState<boolean>(false);
 
-  
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     if (currentUser) {
-      
-      setConnected(true);
       const ichIndex = users.findIndex((el) => el.id === currentUser.id);
 
       setKunde(ichIndex !== -1 && users[ichIndex].status === 'KUNDE');
 
-      const meineWebseiten = webseiten.filter((el) => el.user_id === currentUser.id);
+      const meineWebseiten = webseiten.filter(
+        (el) => el.user_id === currentUser.id
+      );
       setAnzahlWebseiten(meineWebseiten.length);
 
       const meineMessages = messages.filter(
         (el) => el.empfaengerID === currentUser.id && el.gelesen === false
       );
       setAnzahlNeueMessages(meineMessages.length);
-    } else {
-      setConnected(false);
     }
   }, [currentUser, messages, router, users, webseiten]);
-  
-
- 
 
   useEffect(() => {
     loadDashboard(seiten, webseiten);
@@ -116,8 +109,9 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('messages');
+    localStorage.clear();
 
+    alert(currentUser ? currentUser.id : 'null');
     dispatch(logout());
 
     router.push('/');
@@ -130,7 +124,7 @@ const Navbar = () => {
           {menus.map((el, index) => {
             if (el.titre === 'Sich ausloggen') {
               return (
-                connected && (
+                currentUser && (
                   <li key={index}>
                     <button
                       onClick={handleLogout}
@@ -143,10 +137,7 @@ const Navbar = () => {
                   </li>
                 )
               );
-            } else if (
-              (kunde && el.titre === 'Users (nur Admin)') ||
-              (!connected && el.titre === 'Users (nur Admin)')
-            ) {
+            } else if (kunde && el.titre === 'Users (nur Admin)') {
               return;
             } else {
               return (
