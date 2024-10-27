@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { labelCSS } from '@/app/lib/Methodes/methodes';
-import { I_User } from '@/app/lib/Interfaces/I_User';
+import { I_User, initialiseUser } from '@/app/lib/Interfaces/I_User';
 import { useRouter } from 'next/navigation';
 import { addBenutzer__Hilfe } from '@/app/services/Reduces/benutzer_Slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { format } from 'date-fns';
 import { RootState } from '@/app/services/Reduces/redux';
 
 const Anmelden = () => {
@@ -19,25 +18,12 @@ const Anmelden = () => {
   const [passwort1, setPasswort1] = useState('');
   const [passwort2, setPasswort2] = useState('');
   const [passIdentisch, setPassIdentisch] = useState<boolean>(true);
-  const [neuerUser, setNeuerUser] = useState<I_User>({
-    id: '',
-    vorname: '',
-    nachname: '',
-    passwort: '',
-    genre: '', // MANN, FRAU
-    land: '',
-    stadt: '',
-    strasse: '',
-    plz: '', // Code postal
-    hausNr: 0,
-    email: '',
-    tel: '',
-    geburtsdatum: '',
-    anmeldungsDatum: format(new Date(), 'yyyy-MM-dd'),
-    status: 'ADMIN', //ADMIN, KUNDE
-    online: true,
-    messageNonLu: 0,
-  });
+
+  const users = useSelector((state: RootState) => state.users);
+
+  const [neuerUser, setNeuerUser] = useState<I_User>(
+    initialiseUser(String(users.length), true)
+  );
 
   const handleChange = (
     e:
@@ -48,8 +34,6 @@ const Anmelden = () => {
 
     setNeuerUser((prevData) => ({ ...prevData, [name]: value }));
   };
-
-  const users = useSelector((state: RootState) => state.users);
 
   const errorEmail = (
     <p className="my-6 text-center text-lg">
@@ -88,26 +72,7 @@ const Anmelden = () => {
 
       console.log(neuerUserAktualisiert);
 
-      setNeuerUser({
-        id: '',
-        vorname: '',
-        nachname: '',
-        passwort: '',
-        genre: '', // MANN, FRAU
-        land: '',
-        stadt: '',
-        strasse: '',
-        plz: '', // Code postal
-        hausNr: 0,
-        email: '',
-        tel: '',
-        geburtsdatum: '',
-        anmeldungsDatum: format(new Date(), 'yyyy-MM-dd'),
-        status: 'ADMIN', //ADMIN, KUNDE
-        online: true,
-        messageNonLu: 0,
-      });
-
+      initialiseUser(String(users.length))
       setUser_Existiert(false);
 
       router.push('/dashboard');
