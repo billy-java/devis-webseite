@@ -1,50 +1,74 @@
 // pages/chat.tsx
-"use client"
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import ChatContainer from './ChatContainer';
-
-type Message = {
-  id: number;
-  text: string;
-  isSender: boolean;
-  isRead: boolean;
-  sentAt: Date;
-};
-
+import { T_Message } from '@/app/lib/Interfaces/I_User';
+import { RootState } from '@/app/services/Reduces/redux';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { format, parseISO } from 'date-fns';
 
 const ChatPage: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: 'Hello!', isSender: false, isRead: true, sentAt: new Date('2023-10-25T10:30:00') },
-    { id: 2, text: 'Hey! How are you?', isSender: true, isRead: true, sentAt: new Date('2023-10-25T10:31:00') },
-    { id: 3, text: 'I am good, thanks!', isSender: false, isRead: false, sentAt: new Date('2023-10-25T10:32:00') },
-    { id: 4, text: 'Great to hear!', isSender: true, isRead: false, sentAt: new Date('2023-10-25T10:33:00') },
-  ]);
+  const router = useRouter();
+
+  const [messages, setMessages] = useState<T_Message[]>([]);
+
+  const usersList = useSelector((state: RootState) => state.users);
+  const msgAdmin = usersList.find((el) => el.id === '3')!.messages;
+
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push('/');
+    } else {
+      const aktuelUser = usersList.find((el) => el.id === currentUser.id);
+      if (aktuelUser) {
+        const allMessages = [...msgAdmin, ...aktuelUser.messages];
+
+        // Tri des messages par date et heure
+        allMessages.sort((a, b) => {
+          const dateA = parseISO(a.sendungszeit);
+          const dateB = parseISO(b.sendungszeit);
+          return dateA.getTime() - dateB.getTime();
+        });
+
+        setMessages(allMessages);
+      }
+    }
+  }, [currentUser, msgAdmin, router, usersList]);
 
   // Remet le compteur des messages non lus à zéro à l'ouverture du chat
-  useEffect(() => {
+  /*  useEffect(() => {
     setMessages((prevMessages) =>
       prevMessages.map((message) =>
-        !message.isRead && !message.isSender ? { ...message, isRead: true } : message
+        !message.istSender && !message.istSender
+          ? { ...message, istSender: true }
+          : message
       )
     );
-  }, []);
+  }, []);  */
 
   // Fonction pour ajouter un nouveau message
   const handleSendMessage = (text: string) => {
-    const newMessage = {
+    const newMessage: T_Message = {
       id: messages.length + 1,
       text,
-      isSender: true,
-      isRead: true,
-      sentAt: new Date(),
+      empfaengerID: '3',
+      istGelesen: true,
+      sendungszeit: format(new Date(2024, 10, 25, 9, 0), 'yyyy-MM-dd HH:mm'),
     };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
   return (
     <div className="relative h-screen">
-      <ChatContainer messages={messages} onSendMessage={handleSendMessage} />
+      <ChatContainer
+        ich={'3'}
+        messages={messages}
+        onSendMessage={handleSendMessage}
+      />
     </div>
   );
 };

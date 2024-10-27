@@ -19,6 +19,8 @@ const Navbar = () => {
   const webseiten = useSelector((state: RootState) => state.webseiten);
   const messages = useSelector((state: RootState) => state.messages);
   const users = useSelector((state: RootState) => state.users);
+  const msgAdmin = users.find((el) => el.id === '3')!.messages;
+
   const seiten = useSelector((state: RootState) => state.seiten);
 
   const [anzahlWebseiten, setAnzahlWebseiten] = useState(0);
@@ -29,6 +31,16 @@ const Navbar = () => {
 
   useEffect(() => {
     if (currentUser) {
+      const aktuelUser = users.find((el) => el.id === currentUser.id);
+      if (aktuelUser) {
+        const allMessages = [...msgAdmin, ...aktuelUser.messages];
+
+        const unreadCount = allMessages.filter(
+          (message) => !message.istGelesen && !message.istGelesen
+        ).length;
+        setAnzahlNeueMessages(unreadCount);
+      }
+
       const ichIndex = users.findIndex((el) => el.id === currentUser.id);
 
       setKunde(ichIndex !== -1 && users[ichIndex].status === 'KUNDE');
@@ -37,13 +49,8 @@ const Navbar = () => {
         (el) => el.user_id === currentUser.id
       );
       setAnzahlWebseiten(meineWebseiten.length);
-
-      const meineMessages = messages.filter(
-        (el) => el.empfaengerID === currentUser.id && el.gelesen === false
-      );
-      setAnzahlNeueMessages(meineMessages.length);
     }
-  }, [currentUser, messages, router, users, webseiten]);
+  }, [currentUser, messages, msgAdmin, router, users, webseiten]);
 
   useEffect(() => {
     loadDashboard(seiten, webseiten);

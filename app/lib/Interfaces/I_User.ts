@@ -1,9 +1,11 @@
-export type Message = {
+import { format } from "date-fns";
+
+export type T_Message = {
   id: number;
   text: string;
-  isSender: boolean;
-  isRead: boolean;
-  sentAt: Date;
+  empfaengerID: string;
+  istGelesen: boolean;
+  sendungszeit: string;
 };
 
 
@@ -25,7 +27,7 @@ export interface I_User {
   geburtsdatum: string;
   anmeldungsDatum: string;
   status: string; // ADMIN, KUNDE
-  messages: Message[];
+  messages: T_Message[];
 }
 
 
@@ -46,7 +48,7 @@ export function initialiseUser(
   geburtsdatum?: string,
   anmeldungsDatum?: string,
   status?: string,
-  messages?: Message[]
+  messages?: T_Message[]
 ): I_User {
   const user: I_User = {
     id: id || '',
@@ -63,7 +65,7 @@ export function initialiseUser(
     email: email || '',
     tel: tel || '',
     geburtsdatum: geburtsdatum || '',
-    anmeldungsDatum: anmeldungsDatum || new Date().toISOString(),
+    anmeldungsDatum: anmeldungsDatum || format(new Date(), 'yyyy-MM-dd'),
     status: status || 'KUNDE',
     messages: messages || [],
   };

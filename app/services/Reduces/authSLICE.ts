@@ -12,7 +12,7 @@ type AuthState = {
 
 // État initial
 const initialState: AuthState = {
-  user: { id: '3', info: '' },
+  user: { id: '2', info: '' },
 };
 
 // Slice Redux pour l'authentification

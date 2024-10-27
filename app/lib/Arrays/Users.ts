@@ -57,7 +57,38 @@ export const users: I_User[] = [
     geburtsdatum: format(new Date(1990, 7, 23), 'yyyy-MM-dd'), // 23 août 1990
     anmeldungsDatum: format(new Date(2023, 6, 20), 'yyyy-MM-dd'), // 20 juillet 2023
     status: 'KUNDE',
-    messages: [],
+    messages: [
+      {
+        id: 2,
+        text: 'Hallo! Ich möchte eine moderne und benutzerfreundliche Webseite für mein Unternehmen erstellen.',
+        empfaengerID: '3',
+        istGelesen: true,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 3),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+      {
+        id: 4,
+        text: 'Ja, ich brauche eine Kontaktseite, eine Galerie, und es sollte auch einen Bereich für Blogposts geben.',
+        empfaengerID: '3',
+        istGelesen: true,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 9),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+      {
+        id: 6,
+        text: 'Ich mag minimalistische und klare Designs, aber die Webseite sollte professionell aussehen.',
+        empfaengerID: '3',
+        istGelesen: false,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 16),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+    ],
   },
   {
     id: '3',
@@ -76,8 +107,40 @@ export const users: I_User[] = [
     geburtsdatum: format(new Date(1985, 11, 30), 'yyyy-MM-dd'), // 30 décembre 1985
     anmeldungsDatum: format(new Date(2023, 7, 10), 'yyyy-MM-dd'), // 10 août 2023
     status: 'ADMIN',
-    messages: [],
+    messages: [
+      {
+        id: 1,
+        text: 'Hallo! Ich habe Ihre Anfrage erhalten. Wie können wir Ihnen bei der Website helfen?',
+        empfaengerID: '2',
+        istGelesen: true,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 0),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+      {
+        id: 3,
+        text: 'Verstanden. Haben Sie bestimmte Funktionen im Kopf, die die Webseite enthalten sollte?',
+        empfaengerID: '2',
+        istGelesen: true,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 6),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+      {
+        id: 5,
+        text: 'Das klingt gut. Welche Designs oder Stilrichtungen bevorzugen Sie?',
+        empfaengerID: '2',
+        istGelesen: true,
+        sendungszeit: format(
+          new Date(2024, 10, 25, 9, 12),
+          "yyyy-MM-dd'T'HH:mm:ss"
+        ),
+      },
+    ],
   },
+
   {
     id: '4',
     online: false,

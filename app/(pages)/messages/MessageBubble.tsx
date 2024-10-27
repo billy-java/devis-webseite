@@ -3,26 +3,31 @@ import React from 'react';
 
 type MessageBubbleProps = {
   text: string;
-  isSender: boolean;
-  sentAt: Date;
+  empfaengerID: string;
+  ich: string;
+  sendungszeit: string;
 };
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   text,
-  isSender,
-  sentAt,
+  empfaengerID,
+  ich,
+  sendungszeit,
 }) => {
   // Formatage de la date en heures et minutes
-  const formattedDate = sentAt.toLocaleTimeString([], {
+  const formattedDate = new Date(sendungszeit).toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   });
 
   return (
-    <div className={`flex ${isSender ? 'justify-end' : 'justify-start'} mb-2`}>
+    <div
+      className={`flex ${
+        empfaengerID === ich ? 'justify-end' : 'justify-start'
+      } mb-2`}>
       <div
         className={`max-w-xs p-3 rounded-lg text-black ${
-          isSender ? 'bg-blue-500' : 'bg-gray-300 text-gray-800'
+          empfaengerID === ich ? 'bg-blue-500' : 'bg-gray-300 text-gray-800'
         }`}>
         <div>{text}</div>
         <div className="text-xs text-gray-700 mt-1 text-right">

@@ -2,25 +2,19 @@
 import React, { useState } from 'react';
 import MessageBubble from './MessageBubble';
 import UnreadBadge from './UnreadBadge';
-
-type Message = {
-  id: number;
-  text: string;
-  isSender: boolean;
-  isRead: boolean;
-  sentAt: Date;
-};
+import { T_Message } from '@/app/lib/Interfaces/I_User';
 
 type ChatContainerProps = {
-  messages: Message[];
+  messages: T_Message[];
+  ich:string,
   onSendMessage: (text: string) => void;
 };
 
-const ChatContainer: React.FC<ChatContainerProps> = ({ messages, onSendMessage }) => {
+const ChatContainer: React.FC<ChatContainerProps> = ({ messages, ich, onSendMessage }) => {
   const [inputValue, setInputValue] = useState('');
 
   const unreadCount = messages.filter(
-    (message) => !message.isRead && !message.isSender
+    (message) => !message.istGelesen && !message.istGelesen
   ).length;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +37,9 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ messages, onSendMessage }
           <MessageBubble
             key={message.id}
             text={message.text}
-            isSender={message.isSender}
-            sentAt={message.sentAt}
+            empfaengerID={message.empfaengerID}
+            ich={ich}
+            sendungszeit={message.sendungszeit}
           />
         ))}
       </div>
