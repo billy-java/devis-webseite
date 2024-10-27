@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 export const users: I_User[] = [
   {
     id: '0',
+    online: false,
     vorname: '',
     nachname: '',
     passwort: '0@gmail.com',
@@ -18,10 +19,11 @@ export const users: I_User[] = [
     geburtsdatum: '',
     anmeldungsDatum: format(new Date(), 'yyyy-MM-dd'),
     status: 'ADMIN', //ADMIN, KUNDE
-    messages:[]
+    messages: [],
   },
   {
     id: '1',
+    online: false,
     vorname: 'Louis',
     nachname: 'Vuitton',
     passwort: '0000',
@@ -35,11 +37,12 @@ export const users: I_User[] = [
     tel: '+33 1 23 45 67 89',
     geburtsdatum: format(new Date(1980, 4, 15), 'yyyy-MM-dd'), // 15 mai 1980
     anmeldungsDatum: format(new Date(2023, 5, 15), 'yyyy-MM-dd'), // 15 juin 2023
-    status: 'KUNDE', 
-    messages:[]
+    status: 'KUNDE',
+    messages: [],
   },
   {
     id: '2',
+    online: false,
     vorname: 'Anna',
     nachname: 'Smith',
     passwort: '0000',
@@ -54,10 +57,11 @@ export const users: I_User[] = [
     geburtsdatum: format(new Date(1990, 7, 23), 'yyyy-MM-dd'), // 23 août 1990
     anmeldungsDatum: format(new Date(2023, 6, 20), 'yyyy-MM-dd'), // 20 juillet 2023
     status: 'KUNDE',
-    messages:[]
+    messages: [],
   },
   {
     id: '3',
+    online: false,
     vorname: 'John',
     nachname: 'Doe',
     passwort: '0000',
@@ -71,11 +75,12 @@ export const users: I_User[] = [
     tel: '+1 212-555-0100',
     geburtsdatum: format(new Date(1985, 11, 30), 'yyyy-MM-dd'), // 30 décembre 1985
     anmeldungsDatum: format(new Date(2023, 7, 10), 'yyyy-MM-dd'), // 10 août 2023
-    status: 'ADMIN', 
-    messages:[]
+    status: 'ADMIN',
+    messages: [],
   },
   {
     id: '4',
+    online: false,
     vorname: 'Maria',
     nachname: 'Garcia',
     passwort: '0000',
@@ -89,11 +94,12 @@ export const users: I_User[] = [
     tel: '+34 91 123 45 67',
     geburtsdatum: format(new Date(1988, 2, 18), 'yyyy-MM-dd'), // 18 mars 1988
     anmeldungsDatum: format(new Date(2023, 8, 5), 'yyyy-MM-dd'), // 5 septembre 2023
-    status: 'KUNDE', 
-    messages:[]
+    status: 'KUNDE',
+    messages: [],
   },
   {
     id: '5',
+    online: false,
     vorname: 'David',
     nachname: 'Brown',
     passwort: '0000',
@@ -107,11 +113,12 @@ export const users: I_User[] = [
     tel: '+44 20 7946 0958',
     geburtsdatum: format(new Date(1992, 1, 11), 'yyyy-MM-dd'), // 11 février 1992
     anmeldungsDatum: format(new Date(2023, 8, 12), 'yyyy-MM-dd'), // 12 septembre 2023
-    status: 'KUNDE', 
-    messages:[]
+    status: 'KUNDE',
+    messages: [],
   },
   {
     id: '6',
+    online: false,
     vorname: 'Emily',
     nachname: 'Johnson',
     passwort: '0000',
@@ -125,7 +132,7 @@ export const users: I_User[] = [
     tel: '+1 416-555-1234',
     geburtsdatum: format(new Date(1995, 9, 2), 'yyyy-MM-dd'), // 2 octobre 1995
     anmeldungsDatum: format(new Date(2023, 9, 1), 'yyyy-MM-dd'), // 1er octobre 2023
-    status: 'ADMIN', 
-    messages:[]
+    status: 'ADMIN',
+    messages: [],
   },
 ];
